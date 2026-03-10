@@ -1,4 +1,4 @@
-import { Grid } from './types';
+import type { Grid } from './types';
 
 export function createGrid(rows: number, cols: number): Grid {
   return Array.from({ length: rows }, () => Array(cols).fill(false));

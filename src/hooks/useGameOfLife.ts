@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
-import { Grid, Pattern } from '../types';
+import type { Grid, Pattern } from '../types';
 import { createGrid, nextGeneration } from '../game';
 
 const ROWS = 30;

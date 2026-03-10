@@ -1,5 +1,5 @@
 import { useRef, useEffect, useCallback } from 'react';
-import { Grid } from '../types';
+import type { Grid } from '../types';
 
 const CELL_SIZE = 15;
 
