@@ -60,6 +60,17 @@ describe('nextGeneration', () => {
     expect(next[1][1]).toBe(true);
   });
 
+  it('kills cell with more than 3 neighbors (overpopulation)', () => {
+    const grid = createGrid(3, 3);
+    grid[1][1] = true;
+    grid[0][0] = true;
+    grid[0][1] = true;
+    grid[1][0] = true;
+    grid[0][2] = true;
+    const next = nextGeneration(grid);
+    expect(next[1][1]).toBe(false);
+  });
+
   it('blinker oscillates correctly', () => {
     const grid = createGrid(5, 5);
     grid[2][1] = true;
