@@ -24,19 +24,32 @@ export function GameCanvas({ grid, onCellToggle }: Props) {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    ctx.clearRect(0, 0, width, height);
+    // Clear with background
+    ctx.fillStyle = '#0a0a0f';
+    ctx.fillRect(0, 0, width, height);
 
+    // Draw living cells with glow effect
     for (let r = 0; r < rows; r++) {
       for (let c = 0; c < cols; c++) {
         if (grid[r][c]) {
-          ctx.fillStyle = '#333';
-          ctx.fillRect(c * CELL_SIZE, r * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+          // Glow effect
+          ctx.shadowColor = '#00fff2';
+          ctx.shadowBlur = 8;
+          ctx.fillStyle = '#00fff2';
+          ctx.fillRect(c * CELL_SIZE + 1, r * CELL_SIZE + 1, CELL_SIZE - 2, CELL_SIZE - 2);
+          
+          // Inner bright core
+          ctx.shadowBlur = 0;
+          ctx.fillStyle = '#ffffff';
+          ctx.fillRect(c * CELL_SIZE + 3, r * CELL_SIZE + 3, CELL_SIZE - 6, CELL_SIZE - 6);
         }
       }
     }
 
-    ctx.strokeStyle = '#ddd';
-    ctx.lineWidth = 0.5;
+    // Draw grid lines with subtle color
+    ctx.strokeStyle = '#1a1a25';
+    ctx.lineWidth = 1;
+    ctx.shadowBlur = 0;
     for (let r = 0; r <= rows; r++) {
       ctx.beginPath();
       ctx.moveTo(0, r * CELL_SIZE);
@@ -56,8 +69,10 @@ export function GameCanvas({ grid, onCellToggle }: Props) {
       const canvas = canvasRef.current;
       if (!canvas) return null;
       const rect = canvas.getBoundingClientRect();
-      const col = Math.floor((e.clientX - rect.left) / CELL_SIZE);
-      const row = Math.floor((e.clientY - rect.top) / CELL_SIZE);
+      const scaleX = canvas.width / rect.width;
+      const scaleY = canvas.height / rect.height;
+      const col = Math.floor((e.clientX - rect.left) * scaleX / CELL_SIZE);
+      const row = Math.floor((e.clientY - rect.top) * scaleY / CELL_SIZE);
       if (row >= 0 && row < rows && col >= 0 && col < cols) return { row, col };
       return null;
     },
@@ -98,7 +113,12 @@ export function GameCanvas({ grid, onCellToggle }: Props) {
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseUp}
-      style={{ cursor: 'crosshair', display: 'block' }}
+      style={{ 
+        cursor: 'crosshair', 
+        display: 'block',
+        borderRadius: '4px',
+        border: '1px solid #2a2a3a',
+      }}
     />
   );
 }

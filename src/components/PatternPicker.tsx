@@ -8,7 +8,7 @@ interface Props {
 export function PatternPicker({ patterns, onSelect }: Props) {
   return (
     <div className="pattern-picker">
-      <span>Patterns: </span>
+      <span className="label">Patterns:</span>
       {patterns.map(p => (
         <button key={p.name} onClick={() => onSelect(p)}>
           {p.name}
